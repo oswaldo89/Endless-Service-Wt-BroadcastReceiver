@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.service.endlessservicewtbroadcastreceiver.permissions.PermissionManager
 import com.service.endlessservicewtbroadcastreceiver.utils.AutoStartService
 import com.service.endlessservicewtbroadcastreceiver.utils.RestartBroadcastReceiver
 
@@ -33,22 +34,19 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         textView = findViewById(R.id.textView)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-            requestPermissionsIfNecessary()
+            if (PermissionManager.requestPermissionsIfNecessary(this)) {
+                startBroadcast()
+            }
         }
     }
 
     private fun startBroadcast() {
         RestartBroadcastReceiver.scheduleJob(applicationContext)
         val handler = Handler(Looper.getMainLooper())
-        val delayMillis = 5000L
+        val delayMillis = 1000L
 
         handler.postDelayed({
             val filter = IntentFilter()
@@ -56,34 +54,6 @@ class MainActivity : AppCompatActivity() {
             val bm = LocalBroadcastManager.getInstance(this)
             bm.registerReceiver(mBroadcastReceiver, filter)
         }, delayMillis)
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.P)
-    private fun requestPermissionsIfNecessary() {
-        val permissionsToRequest = arrayOf(
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.FOREGROUND_SERVICE
-        )
-
-        val permissionsNeeded = mutableListOf<String>()
-
-        for (permission in permissionsToRequest) {
-            if (ContextCompat.checkSelfPermission(this, permission ) != PackageManager.PERMISSION_GRANTED) {
-                permissionsNeeded.add(permission)
-            }
-        }
-
-        if (permissionsNeeded.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                this,
-                permissionsNeeded.toTypedArray(),
-                PERMISSION_REQUEST_CODE
-            )
-        } else {
-            startBroadcast()
-        }
     }
 
     override fun onRequestPermissionsResult(
