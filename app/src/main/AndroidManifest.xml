@@ -33,7 +33,7 @@
 
         <service
             android:foregroundServiceType="location"
-            android:name=".utils.AutoStartService"
+            android:name=".utils.LocationForegroundtService"
             android:enabled="true" >
         </service>
 

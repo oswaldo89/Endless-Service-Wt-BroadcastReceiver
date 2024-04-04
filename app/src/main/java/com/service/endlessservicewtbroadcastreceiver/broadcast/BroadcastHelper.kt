@@ -6,7 +6,7 @@ import android.content.IntentFilter
 import android.os.Handler
 import android.os.Looper
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.service.endlessservicewtbroadcastreceiver.utils.AutoStartService
+import com.service.endlessservicewtbroadcastreceiver.utils.LocationForegroundtService
 import com.service.endlessservicewtbroadcastreceiver.utils.RestartBroadcastReceiver
 
 object BroadcastHelper {
@@ -18,7 +18,7 @@ object BroadcastHelper {
 
         handler.postDelayed({
             val filter = IntentFilter()
-            filter.addAction(AutoStartService.ACTION_FOO)
+            filter.addAction(LocationForegroundtService.ACTION_FOO)
             val bm = LocalBroadcastManager.getInstance(context)
             bm.registerReceiver(receiver, filter)
         }, delayMillis)

@@ -10,7 +10,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.service.endlessservicewtbroadcastreceiver.broadcast.BroadcastHelper
 import com.service.endlessservicewtbroadcastreceiver.permissions.PermissionManager
-import com.service.endlessservicewtbroadcastreceiver.utils.AutoStartService
+import com.service.endlessservicewtbroadcastreceiver.utils.LocationForegroundtService
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,8 +52,8 @@ class MainActivity : AppCompatActivity() {
 
     private val mBroadcastReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent) {
-            if (intent.action == AutoStartService.ACTION_FOO) {
-                val param = intent.getStringExtra(AutoStartService.EXTRA_PARAM_A)
+            if (intent.action == LocationForegroundtService.ACTION_FOO) {
+                val param = intent.getStringExtra(LocationForegroundtService.EXTRA_PARAM_A)
                 textView.text = param
             }
         }
