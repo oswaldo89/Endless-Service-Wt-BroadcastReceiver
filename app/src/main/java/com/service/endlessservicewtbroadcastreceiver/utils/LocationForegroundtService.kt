@@ -28,6 +28,7 @@ class LocationForegroundtService : Service(), LocationListener {
     private var timerTask: TimerTask? = null
     private var locationManager: LocationManager? = null
     private var lastLocation: Location? = null
+    private var INTERVAL_TIME = 1000L
 
     override fun onBind(intent: Intent): IBinder? {
         return null
@@ -72,7 +73,10 @@ class LocationForegroundtService : Service(), LocationListener {
     private fun startTimer(context: Context) {
         timer = Timer()
         initialiseTimerTask(context)
-        timer!!.schedule(timerTask, 1000, 1000) // Schedule the timer, to wake up every 1 second
+        timer!!.schedule(
+            timerTask, 1000,
+            INTERVAL_TIME // Intervalo de 1 segundo
+        )
     }
 
     private fun initialiseTimerTask(context: Context) {
